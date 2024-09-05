@@ -1,0 +1,37 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: leugin
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: reddit-epub-serverless
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: reddit-epub-serverless
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+
+plugins:
+  - serverless-offline
+  - serverless-s3-local
+functions:
+  find:
+    handler: /routes/find.handler
+    environment:
+      REDDIT_CLIENT_ID: ${env:REDDIT_CLIENT_ID}
+      REDDIT_CLIENT_SECRET: ${env:REDDIT_CLIENT_SECRET}
+      REDDIT_USERNAME: ${env:REDDIT_USERNAME}
+      REDDIT_PASSWORD: ${env:REDDIT_PASSWORD}
+      BUCKET_NAME: ${env:BUCKET_NAME}
+    events:
+      - httpApi:
+          path: /api/v1/reddit/find
+          method: get
+custom:
+  s3:
+    host: localhost
+resources:
+  Resources:
+    s3Database:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        BucketName: ${env:BUCKET_NAME}
