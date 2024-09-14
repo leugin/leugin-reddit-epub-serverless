@@ -8,7 +8,7 @@ This project allow you make amazing epub from reddit posts
 Clone the project
 
 ```bash
-  git clone https://link-to-project
+  git clone https://github.com/leugin/leugin-reddit-epub-serverless
 ```
 
 Go to the project directory
