@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "main": "routes.js",
+  "author": "miguel Quevedo <meqh1992@gmail.com>",
+  "license": "GPL-3.0-only",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
