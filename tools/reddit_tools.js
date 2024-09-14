@@ -1,4 +1,16 @@
-const {sanitizedHtml} = require("./html_tools");
+const { decode } = require('entities');
+const cheerio = require('cheerio');
+
+
+const sanitizedHtml  = (ori) => {
+    const decodedText = decode(ori
+        .replace(/class="md"/g, '')
+        .replaceAll(/\n/g, '')
+    );
+    const html = cheerio.load(decodedText)
+    html('a').remove()
+    return html('html').html()
+}
 
 const extractPageOfPost = (post) => {
 
@@ -6,7 +18,7 @@ const extractPageOfPost = (post) => {
         title:  post.title,
         created: new Date(post.created * 1000),
         created_at: post.created,
-        html: sanitizedHtml(post.selftext_html)
+        html: sanitizedHtml(post.selftext_html ?? '')
     }
 }
 module.exports = {

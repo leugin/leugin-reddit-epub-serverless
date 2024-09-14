@@ -68,14 +68,16 @@ const findAll =   async (subReddit, criteria, options = {}) => {
     const allResponses = [];
 
     let response = await find(subReddit, criteria, options)
-    let json = await response.json()
-    while (json.data.children.length > 0 && json.data.after) {
+    const text  = await response.text()
+    let json = text ? JSON.parse(text) : {}
+    while (json && json.data.children.length > 0 && json.data.after) {
         allResponses.push(...json.data.children)
         response = await find(subReddit, criteria, {
             ...options,
             after: json.data.after
         })
-        json = await response.json()
+        const text  = await response.text()
+        json = text ? JSON.parse(text) : null
     }
     return Promise.resolve(allResponses)
 }

@@ -8,13 +8,29 @@ service: reddit-epub-serverless
 provider:
   name: aws
   runtime: nodejs20.x
+  timeout: 30
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - 's3:PutObject'
+          Resource: arn:aws:s3:::${env:BUCKET_NAME}/*
 
 plugins:
   - serverless-offline
   - serverless-s3-local
+package:
+  individually: true
 functions:
   find:
-    handler: /routes/find.handler
+    handler: routes/find.handler
+    timeout: 120
+    package:
+      patterns:
+        - "./routes/*"
+        - "./tools/*"
+        - "./services/*"
     environment:
       REDDIT_CLIENT_ID: ${env:REDDIT_CLIENT_ID}
       REDDIT_CLIENT_SECRET: ${env:REDDIT_CLIENT_SECRET}
@@ -33,5 +49,26 @@ resources:
     s3Database:
       Type: AWS::S3::Bucket
       Properties:
-        AccessControl: PublicRead
         BucketName: ${env:BUCKET_NAME}
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: false
+          BlockPublicPolicy: false
+          IgnorePublicAcls: false
+          RestrictPublicBuckets: false
+    SampleBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref s3Database
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Action:
+                - 's3:GetObject'
+              Effect: Allow
+              Resource: !Join
+                - ''
+                - - 'arn:aws:s3:::'
+                  - !Ref s3Database
+                  - /*
+              Principal: '*'
+

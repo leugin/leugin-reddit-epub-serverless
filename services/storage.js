@@ -10,13 +10,13 @@ const s3Credentials = {
 };
 const initBucket = ()=> {
     const configuration = {
-        forcePathStyle: true,
-        credentials: {
+        forcePathStyle: true
+     }
+    if (process.env.IS_OFFLINE) {
+        configuration.credentials = {
             accessKeyId:s3Credentials.accessKeyId, // This specific key is required when working offline
             secretAccessKey: s3Credentials.secretAccessKey,
         }
-    }
-    if (process.env.IS_OFFLINE) {
         configuration.endpoint = process.env.BUCKET_URL || "http://localhost:4569"
     }
       return  new S3Client(configuration);
@@ -29,7 +29,7 @@ const checkAndGetClient = async () => {
     return Promise.resolve(client)
 }
 const put = async (file, name) => {
-    return new Promise(async (success, reject) => {const client = await checkAndGetClient()
+    return new Promise(async (success) => {const client = await checkAndGetClient()
        const response =  await client
             .send(
                 new PutObjectCommand({
