@@ -2,6 +2,20 @@
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 
 let client = null
+const paths =  {
+    temp:(fileName) => {
+        return 'public/temp/' + fileName ;
+    },
+    epubs: (filename) => {
+        return 'public/epubs/' + filename
+    },
+    books: (filename) => {
+        return 'public/books/' + filename
+    },
+    images: (filename) => {
+        return 'public/images/' + filename
+    }
+}
 
 const s3Credentials = {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -42,7 +56,23 @@ const put = async (file, name) => {
     }
 )
 }
+const save = async (path, name) => {
+    return new Promise(async (success) => {const client = await checkAndGetClient()
+       const response =  await client
+            .send(
+                new PutObjectCommand({
+                    Bucket: s3Credentials.bucket,
+                    Key: name,
+                    Body: path,
+                })
+            );
+        success(response)
+    }
+)
+}
 module.exports = {
     checkAndGetClient,
+    paths,
+    save,
     put
 }

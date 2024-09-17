@@ -1,4 +1,4 @@
- const {put} = require("../services/storage");
+ const {put, paths} = require("../services/storage");
 const crypto = require("crypto");
 const {extractPageOfPost} = require("../tools/reddit_tools");
 const {ok, unProcessable, error} = require("../tools/response");
@@ -23,8 +23,14 @@ exports.handler = async (event) => {
         clearedPost.sort((a, b)=> {
             return b.created - a.created
         })
-        const uuid = crypto.randomUUID() + '.json'
-        await put(JSON.stringify(clearedPost), uuid )
+
+        const tempEpub =  {
+            name: clearedPost.length > 0 ? clearedPost[0].name: queryParams.search,
+            author: clearedPost.length > 0 ? clearedPost[0].author: queryParams.sub_reddit,
+            pages: clearedPost
+        }
+        const uuid = paths.temp(crypto.randomUUID() + '.json')
+        await put(JSON.stringify(tempEpub), uuid )
         return ok("Completed", {
             ref: uuid
         })

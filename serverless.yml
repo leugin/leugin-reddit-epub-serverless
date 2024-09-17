@@ -41,6 +41,24 @@ functions:
       - httpApi:
           path: /api/v1/reddit/find
           method: get
+  store:
+    handler: routes/store.handler
+    timeout: 120
+    package:
+      patterns:
+        - "./routes/*"
+        - "./tools/*"
+        - "./services/*"
+    environment:
+      REDDIT_CLIENT_ID: ${env:REDDIT_CLIENT_ID}
+      REDDIT_CLIENT_SECRET: ${env:REDDIT_CLIENT_SECRET}
+      REDDIT_USERNAME: ${env:REDDIT_USERNAME}
+      REDDIT_PASSWORD: ${env:REDDIT_PASSWORD}
+      BUCKET_NAME: ${env:BUCKET_NAME}
+    events:
+      - httpApi:
+          path: /api/v1/reddit/{uid}
+          method: post
 custom:
   s3:
     host: localhost
@@ -69,6 +87,6 @@ resources:
                 - ''
                 - - 'arn:aws:s3:::'
                   - !Ref s3Database
-                  - /*
+                  - /public/*
               Principal: '*'
 
