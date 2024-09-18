@@ -12,7 +12,7 @@ const ok = (message, data = {})=> {
 }
 const unProcessable = (message, data = {})=> {
     return {
-        statusCode: 412,
+        statusCode: 422,
         headers: {
             'Content-Type': 'application/json'
         },

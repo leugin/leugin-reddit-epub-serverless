@@ -34,7 +34,8 @@ exports.handler = async (event) => {
         await put(JSON.stringify(tempEpub), path )
         return ok("Completed", {
             url: url(uuid),
-            uuid
+            uuid,
+            book: tempEpub
 
         })
 
