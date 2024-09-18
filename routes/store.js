@@ -1,5 +1,5 @@
 const {ok, error} = require("../tools/response");
-const {save, paths} = require("../services/storage");
+const {save, paths, url} = require("../services/storage");
 const epub = require('epub-gen-memory').default;
 
 exports.handler = async (event) => {
@@ -26,12 +26,15 @@ exports.handler = async (event) => {
             title: options.title,
             author: options.author,
         }, options.content);
-        await save(epu, paths.books(fileName))
-        return ok("resul", options)
+        const path =  paths.books(fileName)
+        await save(epu, path)
+        return ok("resul", {
+            url : url(path)
+        })
 
     }catch (e) {
         console.error( e | {})
-        return  ok("e", e | {})
+        return  error("e", e | {})
     }
 
 

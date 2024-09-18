@@ -37,6 +37,7 @@ functions:
       REDDIT_USERNAME: ${env:REDDIT_USERNAME}
       REDDIT_PASSWORD: ${env:REDDIT_PASSWORD}
       BUCKET_NAME: ${env:BUCKET_NAME}
+      MAX_REQUEST: ${env:MAX_REQUEST, 10}
     events:
       - httpApi:
           path: /api/v1/reddit/find

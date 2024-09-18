@@ -6,15 +6,18 @@ const paths =  {
     temp:(fileName) => {
         return 'public/temp/' + fileName ;
     },
-    epubs: (filename) => {
-        return 'public/epubs/' + filename
-    },
     books: (filename) => {
         return 'public/books/' + filename
     },
     images: (filename) => {
         return 'public/images/' + filename
     }
+}
+
+const url = (path)=> {
+    return process.env.IS_OFFLINE ?
+        `http://localhost:4569/${process.env.BUCKET_NAME}/${path}` :
+        `https://reddit-epub-s3-database.s3.amazonaws.com/${path}`
 }
 
 const s3Credentials = {
@@ -74,5 +77,6 @@ module.exports = {
     checkAndGetClient,
     paths,
     save,
-    put
+    put,
+    url
 }

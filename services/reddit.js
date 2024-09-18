@@ -2,6 +2,8 @@ const querystring = require('querystring');
 
 let token = null
 
+const max = process.env.MAX_REQUEST
+
 const credentials = ()=> {
     const credentials = {
         clientId: process.env.REDDIT_CLIENT_ID,
@@ -70,7 +72,8 @@ const findAll =   async (subReddit, criteria, options = {}) => {
     let response = await find(subReddit, criteria, options)
     const text  = await response.text()
     let json = text ? JSON.parse(text) : {}
-    while (json && json.data.children.length > 0 && json.data.after) {
+    let i = 0;
+    while (json && json.data.children.length > 0 && json.data.after && i < max) {
         allResponses.push(...json.data.children)
         response = await find(subReddit, criteria, {
             ...options,
@@ -78,6 +81,7 @@ const findAll =   async (subReddit, criteria, options = {}) => {
         })
         const text  = await response.text()
         json = text ? JSON.parse(text) : null
+        i++
     }
     return Promise.resolve(allResponses)
 }
