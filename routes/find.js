@@ -16,12 +16,14 @@ exports.handler = async (event) => {
     try {
         const clearedPost = [];
         body.forEach((item, index)=> {
+
             const p = extractPageOfPost(item.data)
+            if (p === null) return
             p.id = index
             clearedPost.push(p)
         })
         clearedPost.sort((a, b)=> {
-            return b.created - a.created
+            return a.created - b.created
         })
 
         const tempEpub =  {

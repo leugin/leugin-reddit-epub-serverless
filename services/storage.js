@@ -1,5 +1,5 @@
 
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const { S3Client, PutObjectCommand, GetObjectCommand} = require("@aws-sdk/client-s3");
 
 let client = null
 const paths =  {
@@ -73,9 +73,33 @@ const save = async (path, name) => {
     }
 )
 }
+const get = async (path) => {
+    const streamToString = (stream) => new Promise((resolve, reject) => {
+        const chunks = [];
+        stream.on('data', (chunk) => chunks.push(chunk));
+        stream.on('error', reject);
+        stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+    });
+    return new Promise(async (success) => {const client = await checkAndGetClient()
+        const params = {
+            Bucket: s3Credentials.bucket,
+            Key: path,
+        };
+
+        const command = new GetObjectCommand(params);
+        const response = await client.send(command);
+
+        const { Body } = response;
+        const json = await streamToString(Body);
+
+        success(json)
+    }
+)
+}
 module.exports = {
     checkAndGetClient,
     paths,
+    get,
     save,
     put,
     url

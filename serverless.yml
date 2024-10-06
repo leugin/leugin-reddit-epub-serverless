@@ -60,6 +60,20 @@ functions:
       - httpApi:
           path: /api/v1/reddit/{uid}
           method: post
+  show:
+    handler: routes/show.handler
+    timeout: 120
+    package:
+      patterns:
+        - "./routes/*"
+        - "./tools/*"
+        - "./services/*"
+    environment:
+      BUCKET_NAME: ${env:BUCKET_NAME}
+    events:
+      - httpApi:
+          path: /api/v1/reddit/{uid}
+          method: get
 custom:
   s3:
     host: localhost
