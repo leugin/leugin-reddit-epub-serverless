@@ -39,9 +39,11 @@ functions:
       BUCKET_NAME: ${env:BUCKET_NAME}
       MAX_REQUEST: ${env:MAX_REQUEST, 10}
     events:
-      - httpApi:
+      - http:
           path: /api/v1/reddit/find
           method: get
+          cors: true
+
   store:
     handler: routes/store.handler
     timeout: 120
@@ -57,9 +59,10 @@ functions:
       REDDIT_PASSWORD: ${env:REDDIT_PASSWORD}
       BUCKET_NAME: ${env:BUCKET_NAME}
     events:
-      - httpApi:
+      - http:
           path: /api/v1/reddit/{uid}
           method: post
+          cors: true
   show:
     handler: routes/show.handler
     timeout: 120
@@ -71,9 +74,11 @@ functions:
     environment:
       BUCKET_NAME: ${env:BUCKET_NAME}
     events:
-      - httpApi:
+      - http:
           path: /api/v1/reddit/{uid}
           method: get
+          cors: true
+
 custom:
   s3:
     host: localhost
