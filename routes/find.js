@@ -15,7 +15,7 @@ exports.handler = async (event) => {
         )
     try {
         const clearedPost = [];
-        body.forEach((item, index)=> {
+        body.forEach((item)=> {
 
             const p = extractPageOfPost(item.data)
             if (p === null) return
