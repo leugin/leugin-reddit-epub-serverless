@@ -5,7 +5,7 @@ exports.handler = async (event) => {
     try {
         const path = paths.temp(event.pathParameters.uid )+ '.json'
        const  res =  await get(path);
-        return  ok('response', res);
+        return  ok('response', JSON.parse(res));
     }
     catch(e){
         return  error("Someting happends", e)

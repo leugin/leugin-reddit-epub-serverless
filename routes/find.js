@@ -19,7 +19,6 @@ exports.handler = async (event) => {
 
             const p = extractPageOfPost(item.data)
             if (p === null) return
-            p.id = index
             clearedPost.push(p)
         })
         clearedPost.sort((a, b)=> {
@@ -27,18 +26,16 @@ exports.handler = async (event) => {
         })
 
         const tempEpub =  {
-            name: clearedPost.length > 0 ? clearedPost[0].name: queryParams.search,
+            title: clearedPost.length > 0 ? clearedPost[0].title: queryParams.title,
             author: clearedPost.length > 0 ? clearedPost[0].author: queryParams.sub_reddit,
-            pages: clearedPost
+            content: clearedPost
         }
         const uuid = crypto.randomUUID()
         const path = paths.temp( uuid+ '.json')
         await put(JSON.stringify(tempEpub), path )
         return ok("Completed", {
-            url: url(uuid),
+            url: url(path),
             uuid,
-            book: tempEpub
-
         })
 
     }
