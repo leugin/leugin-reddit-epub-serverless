@@ -23,7 +23,7 @@ exports.handler = async (event) => {
     const options = {
         title: content.title,
         author: content.author,
-        content: content.pages.map((val)=> {
+        content: content.content.map((val)=> {
             return {
                 title: val.title.substring(0, 50),
                 author: val.author,
