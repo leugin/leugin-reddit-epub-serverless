@@ -63,6 +63,25 @@ functions:
           path: /api/v1/reddit/{uid}
           method: post
           cors: true
+  update:
+    handler: routes/update.handler
+    timeout: 120
+    package:
+      patterns:
+        - "./routes/*"
+        - "./tools/*"
+        - "./services/*"
+    environment:
+      REDDIT_CLIENT_ID: ${env:REDDIT_CLIENT_ID}
+      REDDIT_CLIENT_SECRET: ${env:REDDIT_CLIENT_SECRET}
+      REDDIT_USERNAME: ${env:REDDIT_USERNAME}
+      REDDIT_PASSWORD: ${env:REDDIT_PASSWORD}
+      BUCKET_NAME: ${env:BUCKET_NAME}
+    events:
+      - http:
+          path: /api/v1/reddit/{uid}
+          method: put
+          cors: true
   show:
     handler: routes/show.handler
     timeout: 120

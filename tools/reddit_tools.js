@@ -28,7 +28,7 @@ const extractPageOfPost = (post) => {
             author:  post.author,
             created: new Date(post.created * 1000),
             created_at: post.created,
-            html: sanitizedHtml(post.selftext_html ?? '')
+            content: sanitizedHtml(post.selftext_html ?? '')
         }
     }
     return  null
