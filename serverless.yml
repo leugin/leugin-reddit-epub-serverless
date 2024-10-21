@@ -22,6 +22,10 @@ plugins:
   - serverless-s3-local
 package:
   individually: true
+  exclude:
+    - '.serverless/*/**'
+    - 'buckets/*/**'
+    - '.idea/*/**'
 functions:
   find:
     handler: routes/find.handler

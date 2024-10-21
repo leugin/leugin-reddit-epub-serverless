@@ -10,9 +10,11 @@
   },
   "private": true,
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.645.0",
     "cheerio": "^1.0.0",
     "entities": "^5.0.0",
     "epub-gen-memory": "^1.1.2"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-s3": "^3.645.0"
   }
 }
